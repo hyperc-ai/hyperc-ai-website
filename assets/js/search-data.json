@@ -1,0 +1,104 @@
+{"0": {
+    "doc": "About",
+    "title": "About",
+    "content": ". Let computers think on their own. HyperC is the team of software engineers rethinking basic software principles on the highest metalevel. Join us - info@hyperc.com . ",
+    "url": "http://localhost:4000/about/",
+    "relUrl": "/about/"
+  },"1": {
+    "doc": "Architecture",
+    "title": "Principles of HyperC",
+    "content": "HyperC is loading the code as constraints as opposed to loading instructions. This allows advanced processing of logic, working with non-deterministic programs and higher levels of ambiguity than a typical compiler or interpreter can offer. ",
+    "url": "http://localhost:4000/architecture/#principles-of-hyperc",
+    "relUrl": "/architecture/#principles-of-hyperc"
+  },"2": {
+    "doc": "Architecture",
+    "title": "Gradual Logic Grounding",
+    "content": "Directly processing high-level logic of Python code and higher-level logic of database schemas is a challenging task. So HyperC takes the approach of spliting the problem into “layers” that are easier to address efficiently. Eventually HyperC will process select grounded states to resolve remaining ambiguity with a heuristically guided grounded planner. The layers include: . | Interpreting database schema and generating Python code (e.g. interpreting unique constraints of distinct rows as mutual object inequalities with objects representing each row) | Interperting universal constraints into Python code (like all items that match a criteria must have value True) | Interpreting variable identity (same type variables in Python code may end up referring to same objects) | Symbolic execution of Python functions to create stacks for every branch (given a concrete identity branch) | Resolving other Python ambiguities like attributes with no initial value (given every branch of sym-ex) (at this point we have first-order logic actions in STRIPS-like terms) | Optimizing action schema (first-order logic and triples facts) - various proofs, splitting, etc. | Full grounding of selected states in delete-relaxed space of SAS domain (where all variables are resolved to concrete states and specific objects) | Resolving final ambiguities by finding an execution plan within grounded states using a grounded planner. | . The challenge is to apply as many optimizations as possible at every layer, including applying various machine learning techniques. ",
+    "url": "http://localhost:4000/architecture/#gradual-logic-grounding",
+    "relUrl": "/architecture/#gradual-logic-grounding"
+  },"3": {
+    "doc": "Architecture",
+    "title": "Recursive Planning",
+    "content": "Any problem can be represented as a planning problem. Including the planning problem itself. So HyperC takes advantage of a decomposed planning problem to decompose even further. For example, modern approach to automatic proof includes various AI planning techniques. HyperC has a fully functional metaplanner - the implementation of PDDL planner in terms of HyperC Python (only the problem of planning is defined, not the actual algorithms) . ",
+    "url": "http://localhost:4000/architecture/#recursive-planning",
+    "relUrl": "/architecture/#recursive-planning"
+  },"4": {
+    "doc": "Architecture",
+    "title": "Components",
+    "content": "HyperC Planning Database consists of: . | hyperc Python module: implements core logic of sumbolic execution of Python | hyper-etable module is responsible for interpreting the data schemas into Python code | postgresql proxy manages database connections and adds rewriters for TRANSIT* queries | PostgreSQL database implements standards-compatible interfaces, process and lock management | . ",
+    "url": "http://localhost:4000/architecture/#components",
+    "relUrl": "/architecture/#components"
+  },"5": {
+    "doc": "Architecture",
+    "title": "Learning",
+    "content": " ",
+    "url": "http://localhost:4000/architecture/#learning",
+    "relUrl": "/architecture/#learning"
+  },"6": {
+    "doc": "Architecture",
+    "title": "Architecture Diagram",
+    "content": ". ",
+    "url": "http://localhost:4000/architecture/#architecture-diagram",
+    "relUrl": "/architecture/#architecture-diagram"
+  },"7": {
+    "doc": "Architecture",
+    "title": "Architecture",
+    "content": " ",
+    "url": "http://localhost:4000/architecture/",
+    "relUrl": "/architecture/"
+  },"8": {
+    "doc": "Home",
+    "title": "HyperCPlanning Database",
+    "content": ". ",
+    "url": "http://localhost:4000/",
+    "relUrl": "/"
+  },"9": {
+    "doc": "Home",
+    "title": "About HyperCDB",
+    "content": "HyperC Planning Database enables processing of data and business rules with autonomous algorithms. HyperCDB finds best-effort-optimal plans in retail, logistics, robotics, IT infrastructure and others using action schema defined with an easy domain-independent language. HyperCDB reads stored PostgreSQL procedures written in Python and applies only relevant of them repeatedly to reach a desired end state. It achieves this by gradually lowering the logic order of defined procedures to selected grounded states. The math behind HyperC lies in realms of AI planning, automatic proof and type theory. ",
+    "url": "http://localhost:4000/#about-hypercdb",
+    "relUrl": "/#about-hypercdb"
+  },"10": {
+    "doc": "Home",
+    "title": "Transitional Database vs. Transactional Database",
+    "content": "HyperCDB is a transitional, or planning database. This means that instead of blindly accepting an UPDATE to the stored data, HyperCDB calculates if it is possible to reach the new proposed state using the allowed transitions. This transitional property is useful in several scenarios: . | Validating every change to the data to be in compliance with defined business process | Generating missing data and performing consistency healing automatically | Planning restocking, checking manufacturing timings, allocating workforce, etc. | Rebalancing cloud clusters with complex resource dependencies and constraints | Robotic motion planning for 3D printers, cutters, and multi-axis robots | Automatic website design | Creating spacecraft launch sequences | etc. | . ",
+    "url": "http://localhost:4000/#transitional-database-vs-transactional-database",
+    "relUrl": "/#transitional-database-vs-transactional-database"
+  },"11": {
+    "doc": "Home",
+    "title": "Getting Started with HyperCDB",
+    "content": "Installation . docker run -p 8493:8493 hypercdb/hypercdb . Then connect to the database using pgAdmin or your favorite PostgreSQL admin tool. Demo project user is pguser and password is 123. To run with persistent data, use: . docker run --name hyperc -p 8493:8493 -v &lt;path to your local folder&gt;:/opt/hyperc/db/data hypercdb/hypercdb . Create your first plan . HyperCDB docker image comes with a demo database with vehicles in trucks table and map defined in location_adjacency table. To create a plan for the trucks to move, issue the TRANSIT query: . $ psql -h localhost --port 8493 -U pguser testdb . testdb=&gt; SELECT * FROM trucks; name | odometer | location ---------+----------+---------- Truck 2 | 0 | Office Truck 1 | 0 | Home testdb=&gt; TRANSIT UPDATE trucks SET location = 'Office'; step_num | proc_name -----------+------------- 0 | move_truck 1 | move_truck ... testdb=&gt; SELECT * FROM trucks; name | odometer | location ---------+----------+---------- Truck 2 | 0 | Office Truck 1 | 7 | Office . TRANSIT queries tell HyperC to calculate transition plan instead of ‘just’ accepting the change. You will also notice that odometer reading was updated automatically, as move_truck procedure was also counting mileage at every execution. ",
+    "url": "http://localhost:4000/#getting-started-with-hypercdb",
+    "relUrl": "/#getting-started-with-hypercdb"
+  },"12": {
+    "doc": "Home",
+    "title": "Preparing Database From Scratch",
+    "content": "Initializing database . HyperCDB requires special table hc_plan and procedure hyperc_transit to be initialized in the database so you must always explicitly issue this command: . TRANSIT INIT; . You must be connected to correct database before issuing TRANSIT INIT. Creating tables . Creating tables works exactly the same as in any PostgreSQL database with additional requirement that all tables must have PRIMARY KEY defined: . CREATE TABLE public.trucks ( name character varying(50) PRIMARY KEY NOT NULL, odometer integer, location character varying(50) NOT NULL ); . Creating transition procedures . All transition procedures must have language 'hyperc' and define one or more input parameters. Column names must be all capital letters in current edition of HyperCDB procedure language: . CREATE PROCEDURE move_truck(t trucks, l location_adjacency) LANGUAGE 'hyperc' AS $BODY$ assert t.LOCATION == l.LOC_A t.LOCATION = l.LOC_B t.ODOMETER += l.DISTANCE $BODY$; . Procedure move_truck(t truck, l location_adjacency) takes two rows as input: any row from trucks table as local variable t and any row from location_adjacency table with local name l. Additional information on defining stored procedures can be found in PostgreSQL manual. HyperC will automatically define which rows have the best match to reach end state in least steps. The body of the procedure is defined in Python-like dialect: . assert t.LOCATION == l.LOC_A t.LOCATION = l.LOC_B t.ODOMETER += l.DISTANCE . The first line, assert t.LOCATION == l.LOC_A means that only such two rows (t from trucks and l from location_adjacency) that have equal values in columns location and loc_a respectively can be used in this procedure. The business logic behind this assertion is that we want to ‘JOIN’ tables trucks and location_adjacency by columns LOCATION and LOC_A because the truck can only move to the next adjacent location, defined in columns LOC_A and LOC_B in locations adjacency map table. The second and third lines define the effects of the procedure: updating location of the truck to next hop from the table, and increasing the odometer. ",
+    "url": "http://localhost:4000/#preparing-database-from-scratch",
+    "relUrl": "/#preparing-database-from-scratch"
+  },"13": {
+    "doc": "Home",
+    "title": "Documentation",
+    "content": "HyperCDB is based on PostgreSQL database v.14 and most functions of the database work as expected. The HyperC Planning Database extends SQL language with the TRANSIT * set of commands: . TRANSIT INIT . Prepares the database for planning function. [ EXPLAIN [ TO table_name1[.column], table_name2, ... ]] TRANSIT UPDATE table_name SET { column = { expression | DEFAULT } | ( column [, ...] ) = ( { expression | DEFAULT } [, ...] ) } [, ...] [ WHERE condition ] . TRANSIT UPDATE initiates transition to the state defined by UPDATE statement with familiar SQL syntax of UPDATE. It returns the table of the plan with unique plan_id that can be remembered and used to query hc_plan table to recall this plan at any later time. EXPLAIN TRANSIT ... - initiates calculation of the plan, stores and outputs the plan table but does not do any actual updates to the state. EXPLAIN TO *table_name*, ... TRANSIT ... - instructs the solver to only write down changes to tables (and possibly columns) specified after TO keyword. Examples: . Calculate transition plan but only write down odometer reading, leaving truck at its original location: . EXPLAIN TO trucks.odometer TRANSIT UPDATE trucks SET location = 'Office'; . hc_plan table . HyperCDB defines a special table hc_plan to incrementally store all plans with called procedure names and input/output parameters in JSONB objects. The purpose of hc_plan table is to easily extract additional information from the plans like tracing the truck travel path, measuring fuel consumption, etc. When TRANSIT command completes it outputs back to the user connection the table with plan summary where plan_id can be extracted and remembered by the client application. ",
+    "url": "http://localhost:4000/#documentation",
+    "relUrl": "/#documentation"
+  },"14": {
+    "doc": "Home",
+    "title": "Status",
+    "content": "HyperC in under active development. It is used in several production environments but has scalability limitations that are being addressed using various machine learning techniques. ",
+    "url": "http://localhost:4000/#status",
+    "relUrl": "/#status"
+  },"15": {
+    "doc": "Home",
+    "title": "Support",
+    "content": "HyperCDB is supported by HyperC team. Feel free to write at andrew@hyperc.com. ",
+    "url": "http://localhost:4000/#support",
+    "relUrl": "/#support"
+  },"16": {
+    "doc": "Home",
+    "title": "Home",
+    "content": ". ",
+    "url": "http://localhost:4000/",
+    "relUrl": "/"
+  }
+}
