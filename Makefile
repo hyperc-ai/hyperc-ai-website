@@ -5,3 +5,6 @@ all:
 	bash -c "cd _site && git commit -m 'updated build'"
 	bash -c "cd _site && git push origin gh-pages"
 
+serve:
+	bundle exec jekyll serve
+
